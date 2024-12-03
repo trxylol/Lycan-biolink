@@ -56,7 +56,7 @@ function performSearch() {
 document.addEventListener("DOMContentLoaded", function() {
     const audioElement = document.getElementById('bgMusic');
     const songUrls = [
-    "https://dl.ytbmp3.org/?data=sYSl19JXbFfVqtiXZ9%2FYZMWozZCc09BnlKWlysLUoG2PlJWas6qDgtKLxLCusrSC1oS5u4LdyKmZotXRsaithmzMeN7Va2WAp4qbnJPJrJ3Ke8jbjK2vfHKQ3sfClmmWh812y7aMnK2Zj7aepc3HiMqt2YdrptKAlZu00deVpZdmtJuVr2uHhpSDutCc0dmb2KTY1HzJl51ye5vYzLqmm2%2Fbe829paZ6h2qol47fpayukdHNrbCWh5GIrbySzm2beYdiq9t%2BdaTNqLO6XpimV5Z%2BnK6diZV6fnC4sMzNmX2lsHfLnWhopMtxydmz2ap8sZ65zq%2Bx26yGn8jYs62fmKjZVZiqWmV5hGSE2aLa0JeGcoa2ocnCeZOaycvCwIukqMOZ08VikXfHmdXZW%2BM%3D"
+    "https://nmnn.mnuu.nu/api/v1/download?sig=DAGCMghg4sqErTeLnsOm8mmvl9NlvIgqfVL8GV0Rhad2kguHzC%2B2Q9P66U02L4x3poQ9b2zEtcdd4sLNsG8H1MNE0FEJ7clpV8yYzHV1EBRyfI50JzuV2aI%2Fg%2FLqEgW5pFUx%2BtradEGfRVkb8D%2FK20QR6xpNh2yyqknDU7LwAmjbhuTy8v%2FEdjFFEiutim7rrYQs5SxhaMYLb479YHvFQ5R9eOfEf15Sndt%2FlTbQndLeQ90AHQrJOijDsPD%2Br1a3iuAW4hO2TmAabq%2BOkDHaqqpF%2FK5QPcA7PRbBMoruPqIEk2R5fAy1ADob6x3TlIG38FtoJJsQBDxuE6OmfwOuUA%3D%3D&s=3&v=MDwOJOTvLzE&f=mp3&_=0.6910614501010812"
    
     ];
 
