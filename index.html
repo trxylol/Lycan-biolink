@@ -1,41 +1,250 @@
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hack Nexus Terminal</title>
   <base href="." />
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
 
-  <div class="splash-screen">
-    <div class="splash-text">Are You Not Entertained?</div>
+<div class="splash-screen">
+  <div class="splash-text">Are You Not Entertained?</div>
+</div>
+
+<div class="command-box">
+  <h3>Available Commands</h3>
+  <ul class="command-list">
+    <li>hack nexus - Get Discord invite</li>
+    <li>web nexus - Visit our website</li>
+  </ul>
+</div>
+
+<div class="terminal">
+  <div class="volume-control">
+    <span class="volume-icon" onclick="toggleMute()">🔊</span>
+    <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
   </div>
-
-  <div class="command-box">
-    <h3>Available Commands</h3>
-    <ul class="command-list">
-      <li>hack nexus - Get Discord invite</li>
-      <li>web nexus - Visit our website</li>
-    </ul>
+  <div class="prompt">
+    <span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line">connecting to Hack Nexus server...</span>
   </div>
+  <div class="output" id="output"></div>
+</div>
 
-  <div class="terminal">
-    <div class="volume-control">
-      <span class="volume-icon" onclick="toggleMute()">🔊</span>
-      <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
-    </div>
-    <div class="prompt">
-      <span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line">connecting to Hack Nexus server...</span>
-    </div>
-    <div class="output" id="output"></div>
-  </div>
+<audio id="backgroundMusic" loop>
+  <source src="https://archive.org/download/dark-cyberpunk-techno/Dark%20Cyberpunk%20Techno.mp3" type="audio/mpeg">
+</audio>
 
-  <audio id="backgroundMusic" loop>
-    <source src="https://archive.org/download/dark-cyberpunk-techno/Dark%20Cyberpunk%20Techno.mp3" type="audio/mpeg">
-  </audio>
+<script>
+window.addEventListener('load', () => {
+  const splashScreen = document.querySelector('.splash-screen');
+  
+  // Add click event listener to splash screen
+  splashScreen.addEventListener('click', () => {
+    splashScreen.style.opacity = '0';
+    setTimeout(() => {
+      splashScreen.style.display = 'none';
+      // Only start the connection sequence after splash screen is gone
+      startConnection();
+    }, 1000);
+  });
+});
 
-  <script src="script.js"></script>
+const terminal = document.querySelector('.terminal');
+const output = document.getElementById('output');
+const initialPrompt = document.querySelector('.prompt .command-line');
+const audio = document.getElementById('backgroundMusic');
+const volumeIcon = document.querySelector('.volume-icon');
+
+let commandHistory = [];
+let historyIndex = -1;
+let isInitialLoad = true;
+let isMuted = false;
+
+// Set initial volume
+audio.volume = 0.5;
+
+function toggleMute() {
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+  volumeIcon.textContent = isMuted ? '🔇' : '🔊';
+}
+
+function updateVolume(value) {
+  const volume = value / 100;
+  audio.volume = volume;
+  if (volume === 0) {
+    volumeIcon.textContent = '🔇';
+    isMuted = true;
+  } else {
+    volumeIcon.textContent = '🔊';
+    isMuted = false;
+  }
+}
+
+// Start playing music when user interacts with the page
+document.addEventListener('click', () => {
+  audio.play().catch(error => console.log('Audio playback failed:', error));
+}, { once: true });
+
+async function typeWriter(text, element, speed = 50) {
+  let i = 0;
+  element.textContent = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  
+  return new Promise((resolve) => {
+    function type() {
+      if (i < text.length) {
+        element.textContent = text.substring(0, i + 1);
+        if (element !== initialPrompt) {
+          element.appendChild(cursor);
+        }
+        i++;
+        setTimeout(type, speed);
+      } else {
+        if (element !== initialPrompt) {
+          element.removeChild(cursor);
+        }
+        resolve();
+      }
+    }
+    type();
+  });
+}
+
+async function startConnection() {
+  if (isInitialLoad) {    
+    const responseLine = document.createElement('div');
+    responseLine.className = 'output';
+    output.appendChild(responseLine);
+    await typeWriter("Establishing secure connection to Hack Nexus...", responseLine);
+    
+    const loadingBar = document.createElement('div');
+    loadingBar.className = 'loading-bar';
+    loadingBar.innerHTML = '<div class="loading-progress"></div>';
+    output.appendChild(loadingBar);
+    
+    setTimeout(() => {
+      loadingBar.querySelector('.loading-progress').style.width = '100%';
+      
+      setTimeout(async () => {
+        const introLine = document.createElement('div');
+        introLine.className = 'output';
+        output.appendChild(introLine);
+        await typeWriter("Hi, my name's Lycan! I'm a Mod for HackNexus, a server for ethical hackers", introLine);
+        
+        const communityLine = document.createElement('div');
+        communityLine.className = 'output';
+        output.appendChild(communityLine);
+        await typeWriter("We're a growing community focused on learning and sharing knowledge about penetration testing, networking, and cybersecurity", communityLine);
+        
+        const detailsLine = document.createElement('div');
+        detailsLine.className = 'output';
+        output.appendChild(detailsLine);
+        await typeWriter("Whether you're just starting out or an experienced professional, our members collaborate on CTF challenges, share resources, and help each other grow in the field of ethical hacking", detailsLine);
+
+        const blankLine1 = document.createElement('div');
+        blankLine1.className = 'output';
+        blankLine1.innerHTML = '&nbsp;';
+        output.appendChild(blankLine1);
+
+        const blankLine2 = document.createElement('div');
+        blankLine2.className = 'output';
+        blankLine2.innerHTML = '&nbsp;';
+        output.appendChild(blankLine2);
+
+        createNewPrompt();
+        
+      }, 3000);
+    }, 100);
+    
+    isInitialLoad = false;
+  }
+}
+
+function createNewPrompt() {
+  const newPrompt = document.createElement('div');
+  newPrompt.className = 'prompt';
+  newPrompt.innerHTML = '<span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line"></span><span class="cursor"></span>';
+  output.appendChild(newPrompt);
+}
+
+function processCommand(command) {
+  const currentPrompt = output.querySelector('.prompt:last-child');
+  const cursor = currentPrompt.querySelector('.cursor');
+  if (cursor) {
+    cursor.remove();
+  }
+
+  const outputElement = document.createElement('div');
+  outputElement.className = 'output';
+  
+  if (command.toLowerCase() === 'hack nexus') {
+    outputElement.innerHTML = `Join us on Discord: <a href="https://discord.gg/W4jdfXdkSE" class="invite-link" target="_blank">https://discord.gg/W4jdfXdkSE</a>`;
+    output.appendChild(outputElement);
+    
+    const blankLine = document.createElement('div');
+    blankLine.className = 'output';
+    blankLine.innerHTML = '&nbsp;';
+    output.appendChild(blankLine);
+    
+    createNewPrompt();
+  } else if (command.toLowerCase() === 'web nexus') {
+    outputElement.innerHTML = `<a href="https://hacknexus.io/" class="invite-link" target="_blank">https://hacknexus.io/</a>`;
+    output.appendChild(outputElement);
+    
+    const blankLine = document.createElement('div');
+    blankLine.className = 'output';
+    blankLine.innerHTML = '&nbsp;';
+    output.appendChild(blankLine);
+    
+    createNewPrompt();
+  } else {
+    createNewPrompt();
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!isInitialLoad) {
+    const prompt = output.querySelector('.prompt:last-child');
+    const commandLine = prompt.querySelector('.command-line');
+    const currentCommand = commandLine.textContent;
+
+    if (e.key === 'Enter') {
+      const command = currentCommand;
+      if (command) {
+        commandHistory.push(command);
+        historyIndex = commandHistory.length;
+        processCommand(command);
+      } else {
+        createNewPrompt();
+      }
+    } else if (e.key === 'Backspace') {
+      if (currentCommand.length > 0) {
+        commandLine.textContent = currentCommand.slice(0, -1);
+      }
+    } else if (e.key.length === 1) {
+      commandLine.textContent = currentCommand + e.key;
+    } else if (e.key === 'ArrowUp') {
+      if (historyIndex > 0) {
+        historyIndex--;
+        commandLine.textContent = commandHistory[historyIndex];
+      }
+    } else if (e.key === 'ArrowDown') {
+      if (historyIndex < commandHistory.length - 1) {
+        historyIndex++;
+        commandLine.textContent = commandHistory[historyIndex];
+      } else {
+        historyIndex = commandHistory.length;
+        commandLine.textContent = '';
+      }
+    }
+  }
+});
+
+terminal.addEventListener('click', () => {
+  terminal.focus();
+});
+</script>
+
 </body>
 </html>
