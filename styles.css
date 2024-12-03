@@ -122,6 +122,16 @@ body {
   transition: width 3s linear;
 }
 
+.command-line {
+  display: inline;
+}
+
+.invite-link {
+  color: #0066ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .volume-control {
   position: absolute;
   top: 20px;
@@ -222,5 +232,4 @@ body {
   100% {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
                  0 0 20px rgba(255, 255, 255, 0.8),
-                 0 0 30px rgba(255, 255, 255, 0.8);
-  }
+                 0 0 30px rgba(255,
