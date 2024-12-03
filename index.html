@@ -1,6 +1,249 @@
 <html><head><base href="." />
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap" rel="stylesheet">
+<style>
+  body {
+    background: url('https://i.gifer.com/embedded/download/2I93.gif') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Added for absolute positioning of command-box */
+  }
+  
+  .terminal {
+    background: rgba(30, 30, 30, 0.9);
+    width: 800px;
+    height: 500px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .command-box {
+    position: fixed; /* Changed to fixed */
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #0f0;
+    border-radius: 5px;
+    padding: 15px;
+    color: #0f0;
+    font-size: 14px;
+    max-width: 250px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+    z-index: 1000; /* Added to ensure it stays on top */
+  }
+
+  .command-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    border-bottom: 1px solid #0f0;
+    padding-bottom: 5px;
+  }
+
+  .command-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .command-list li {
+    margin-bottom: 8px;
+    padding: 5px;
+    background: rgba(0, 255, 0, 0.1);
+    border-radius: 3px;
+  }
+
+  .command-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .prompt {
+    color: #0f0;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  }
+
+  .user {
+    color: #0f0;
+    font-weight: bold;
+  }
+
+  .at {
+    color: #fff;
+  }
+
+  .host {
+    color: #0066ff;
+    font-weight: bold;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background: #0f0;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .output {
+    color: #0f0;
+    margin-top: 10px;
+    font-size: 16px;
+    opacity: 0.8;
+  }
+
+  .loading-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #0f0;
+    margin-top: 10px;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .loading-progress {
+    width: 0%;
+    height: 100%;
+    background: #0f0;
+    transition: width 3s linear;
+  }
+
+  .command-line {
+    display: inline;
+  }
+
+  .invite-link {
+    color: #0066ff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .volume-control {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .volume-slider {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 4px;
+    background: #0f0;
+    outline: none;
+    border-radius: 2px;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #0f0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .volume-icon {
+    color: #0f0;
+    cursor: pointer;
+  }
+
+  .splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://media.tenor.com/LR4-NZE-h_YAAAAC/are-you-not-entertained-gladiator.gif') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+    cursor: pointer; /* Added to make the splash screen more clickable */
+  }
+
+  .splash-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+  }
+
+  .splash-text {
+    font-size: 54px;
+    color: white;
+    text-transform: uppercase;
+    animation: glowPulse 2s infinite;
+    text-align: center;
+    font-family: 'Ubuntu Mono', monospace;
+    letter-spacing: 6px;
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .splash-text:after {
+    content: '\A\A(Click anywhere to continue)'; /* Added instruction for click */
+    font-size: 24px;
+    white-space: pre;
+    display: block;
+    margin-top: 20px;
+  }
+
+  @keyframes glowPulse {
+    0% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                   0 0 20px rgba(255, 255, 255, 0.8),
+                   0 0 30px rgba(255, 255, 255, 0.8);
+    }
+    50% {
+      text-shadow: 0 0 20px rgba(255, 255, 255, 1),
+                   0 0 40px rgba(255, 255, 255, 1),
+                   0 0 60px rgba(255, 255, 255, 1),
+                   0 0 80px rgba(255, 255, 255, 0.5);
+    }
+    100% {
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                   0 0 20px rgba(255, 255, 255, 0.8),
+                   0 0 30px rgba(255, 255, 255, 0.8);
+    }
+  }
+</style>
 </head><body>
+
+<div class="splash-screen">
+  <div class="splash-text">Are You Not Entertained?</div>
+</div>
 
 <div class="command-box">
   <h3>Available Commands</h3>
@@ -16,7 +259,7 @@
     <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
   </div>
   <div class="prompt">
-    <span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line"></span>
+    <span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line">connecting to Hack Nexus server...</span>
   </div>
   <div class="output" id="output"></div>
 </div>
@@ -26,6 +269,20 @@
 </audio>
 
 <script>
+window.addEventListener('load', () => {
+  const splashScreen = document.querySelector('.splash-screen');
+  
+  // Add click event listener to splash screen
+  splashScreen.addEventListener('click', () => {
+    splashScreen.style.opacity = '0';
+    setTimeout(() => {
+      splashScreen.style.display = 'none';
+      // Only start the connection sequence after splash screen is gone
+      startConnection();
+    }, 1000);
+  });
+});
+
 const terminal = document.querySelector('.terminal');
 const output = document.getElementById('output');
 const initialPrompt = document.querySelector('.prompt .command-line');
@@ -91,9 +348,6 @@ async function typeWriter(text, element, speed = 50) {
 
 async function startConnection() {
   if (isInitialLoad) {    
-    // First type out the initial connection message
-    await typeWriter("connecting to Hack Nexus server...", initialPrompt);
-    
     const responseLine = document.createElement('div');
     responseLine.className = 'output';
     output.appendChild(responseLine);
@@ -148,8 +402,6 @@ function createNewPrompt() {
   newPrompt.innerHTML = '<span class="user">Lycan</span><span class="at">@</span><span class="host">HackNexus</span>:~$ <span class="command-line"></span><span class="cursor"></span>';
   output.appendChild(newPrompt);
 }
-
-setTimeout(startConnection, 1000);
 
 function processCommand(command) {
   const currentPrompt = output.querySelector('.prompt:last-child');
